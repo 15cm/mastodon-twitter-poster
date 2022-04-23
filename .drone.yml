@@ -5,7 +5,7 @@ name: docker-build
 
 steps:
   - name: docker
-    image: plugins/kaniko:linux-amd64
+    image: plugins/kaniko:1.5.1-linux-amd64-kaniko1.8.1
     settings:
       repo: 15cm/mastodon-twitter-poster
       auto_tag: true

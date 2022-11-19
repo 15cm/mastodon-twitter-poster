@@ -1,4 +1,4 @@
-FROM node:10-alpine as node
+FROM node:18-alpine as node
 FROM ruby:3.1.0-alpine
 
 LABEL maintainer="https://github.com/renatolond/mastodon-twitter-poster" \
@@ -10,7 +10,8 @@ ARG GID=991
 ENV PATH=/crossposter/bin:$PATH \
     RAILS_SERVE_STATIC_FILES=true \
     RAILS_ENV=production \
-    NODE_ENV=production
+    NODE_ENV=production \
+    RAILS_LOG_TO_STDOUT=enabled
 
 EXPOSE 3000 4000
 

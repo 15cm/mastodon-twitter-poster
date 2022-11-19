@@ -39,7 +39,7 @@ If you decide to crosspost from Twitter to Mastodon, remember to turn on notific
 
 ## Note on usage
 
-The crossposter is made with multiple users in mind. For that reason, it can be quite a lot of moving parts if you want to self-host yourself. There's other good tools to self-host out there like https://github.com/AmauryCarrade/MastodonToTwitter and the others listed at the [Bridges from/to other platforms section of the Mastodon apps](https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md#bridges-fromto-other-platforms). That being said, it should work even if you only want it for your own usage.
+The crossposter is made with multiple users in mind. For that reason, it can be quite a lot of moving parts if you want to self-host yourself. There's other good tools to self-host out there like https://github.com/AmauryCarrade/MastodonToTwitter and the others listed at the [Bridges from/to other platforms section of the Mastodon apps](https://github.com/felx/mastodon-documentation/blob/master/Using-Mastodon/Apps.md#bridges-fromto-other-platforms). That being said, it should work even if you only want it for your own usage.
 
 ## Ruby on Rails
 
@@ -173,17 +173,6 @@ You can add `ALLOWED_DOMAINS=your.domain.com` to .env.production to only allow u
 At the same time, you can add `BLOCKED_DOMAINS=evil.corp,bad.instance` to .env.production to block users from those instances to access the crossposter. They need to be separated by commas, spaces are optional.
 
 You should only enable one at each time.
-
-## Alternative twitter domain
-
-When users mention someone on twitter, you can use another domain other than twitter.com. The idea is to allow you to use services such as [twitter.activitpub.actor](https://framagit.org/DavidLibeau/activitypubactor), which will make the mentions look like real fediverse mentions.
-
-For that you need to add the following to variables to your .env.production:
-
-```
-USE_ALTERNATIVE_TWITTER_DOMAIN=true
-ALTERNATIVE_TWITTER_DOMAIN=twitter.activitypub.actor
-```
 
 ## Admin tasks
 

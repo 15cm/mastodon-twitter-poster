@@ -172,7 +172,7 @@ class TwitterUserProcessor
   end
 
   def quote_short_url
-    tweet.urls.find { |u| u.expanded_url.to_s.casecmp(tweet.quoted_status_permalink.expanded.to_s).zero? }.url
+    tweet.urls.find { |u| u.expanded_url.to_s.casecmp(tweet.quoted_status_permalink.expanded.to_s).zero? }&.url || tweet.quoted_status_permalink.url.to_s
   end
 
   def process_quote_as_old_rt
@@ -386,7 +386,13 @@ class TwitterUserProcessor
     status = user.mastodon_client.create_status(text, opts)
     self.class.stats.increment("tweet.posted_to_mastodon")
     self.class.stats.timing("tweet.average_time_to_post", ((Time.now - tweet.created_at) * 1000).round(5))
-    Status.create(mastodon_client: user.mastodon.mastodon_client, masto_id: status.id, tweet_id: tweet.id) if save_status
+    if save_status
+      begin
+        Status.create(mastodon_client: user.mastodon.mastodon_client, masto_id: status.id, tweet_id: tweet.id)
+      rescue ActiveRecord::RecordNotUnique => e
+        Rails.logger.error { "Got an error trying to save the status, probably already existed, will skip from now on #{e}" }
+      end
+    end
     status.id
   end
 end

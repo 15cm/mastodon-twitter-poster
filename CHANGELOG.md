@@ -1,3 +1,24 @@
+[2022-11-11] - [IMPORTANT] Removes the option for retweets and quote-retweets to be posted publicly. `rails db:migrate` needed after upgrade.
+Some functionalities of Ruby >3.0 are used starting today, if you're using Ruby < 3.0 the crossposter will not work correctly.
+A new sidekiq queue was created for the job that fills the queue. You need to add it, see `config/systemd-services/crossposter-sidekiq.service.example`
+
+[2022-11-04] - Add Stoplight, a gem that acts as a circuitbreaker. This will give a cooldown to servers that might be offline.
+
+[2022-10-18] - Update gems and node dependencies. `bundle install` and `yarn install --pure-lockfile` needed after upgrade.
+Node version upgraded due do a dependency, higher than 14 needed.
+
+[2022-02-22] - Update gems and node dependencies. `bundle install` and `yarn install --pure-lockfile` needed after upgrade. Attempts at speeding up job creation to deal with occasional doubled posts.
+
+[2022-06-05] - Fix char count for twitter alt text. Make placeholder more consistent (#735). Update gems and node dependencies. `bundle install` and `yarn install --pure-lockfile` needed after upgrade.
+
+[2022-05-18] - Update gems and node dependencies. `bundle install` and `yarn install --pure-lockfile` needed after upgrade. Remove twitter.activitypub.actor as per [#725](https://github.com/renatolond/mastodon-twitter-poster/issues/725)
+
+[2022-05-01] - Update gems and node dependencies. `bundle install` and `yarn install --pure-lockfile` needed after upgrade. Note that one of the dependencies now needs Redis >= 4.2.0.
+
+[2022-02-22] - Update gems and node dependencies. `bundle install` and `yarn install --pure-lockfile` needed after upgrade.
+
+[2022-02-04] - Update needed node version, higher than 12 is needed. Update gems and node dependencies. `bundle install` and `yarn install --pure-lockfile` needed after upgrade.
+
 [2022-01-17] - Major framework upgrade.
 Node version upgraded, higher than 10.16 needed.
 Ruby version upgraded to 3.1.0. The crossposter should still work in previous versions, though new features of ruby >3.0 will be used in the future, for the moment you can change the version on `.ruby-version`.

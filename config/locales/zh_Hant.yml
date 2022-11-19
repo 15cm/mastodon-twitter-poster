@@ -13,6 +13,10 @@ zh_Hant:
     oauth:
       allowed_domains: 抱歉，此站臺僅接受來自 %{domains} 的帳號。
       blocked_domain: 抱歉，%{domain} 被此站臺封鎖。
+      domain_issue:
+        json_error: 站台 %{domain} 並未正確回應。請檢查這是否真的是您的站台網域。若問題仍存在，請聯絡您的站台管理員。
+        connection_error: crossposter 無法連線至 %{domain}。請再次檢查網址。若問題仍存在，請聯絡您的站台管理員。
+        ssl_error: 站台 %{domain} 似乎有 SSL 憑證相關的問題。請聯絡您的站台管理員。
   features: 功能
   follow_us_on_the_fediverse: 在 fediverse 上追蹤我們！
   for_news_and_status: 新聞與狀態：
@@ -43,8 +47,8 @@ zh_Hant:
   masto_boost_do_not_post: 不要在 Twitter 上張貼轉嘟
   masto_boost_post_as_link: 在 Twiiter 上將轉嘟張貼為連結（已轉嘟：https://mastodon.social/@renatolond/15082784）
   masto_login:
-    identifier: 識別符
-    invalid_identifier: 無效的識別符。您必須使用 user@instance 的格式，如 crossposter@masto.donte.com.br
+    identifier: 您的完整 Mastodon 使用者名稱
+    invalid_identifier: 無效的使用者名稱。您必須使用如 username@your.instance 的格式，例如 crossposter@masto.donte.com.br
     login: 登入
     please: 連線到您的 Mastodon
   masto_mention_do_not_post: 不要在 Twitter 上張貼提及
@@ -145,7 +149,7 @@ zh_Hant:
       twitter_word_list_explanation: 如果您啟用上面的選項，將會使用此字詞清單。不會有部份符合的情況發生，亦及您如果在上面寫的是
         "bird"，那麼 "birdsite" 就不會被認為是一樣的東西。
     mastodon_identifier:
-      identifier_placeholder: 您的使用者者名稱之於您的站臺，格式為 your.at@your.instance
+      identifier_placeholder: username@your.instance
     show:
       advanced_from_mastodon_options: 從 Mastodon 到 Twitter 貼文的進階選項
       advanced_from_twitter_options: 從 Twitter 到 Mastodon 貼文的進階選項
@@ -154,3 +158,6 @@ zh_Hant:
   cw_only: 僅 CW
   cw_and_content: CW 與內容
   content_only: 僅內容
+  mastodon_instance_healthy: 您的 Mastodon 站台似乎很健康。
+  mastodon_instance_unavailable: 您的 Mastodon 站台不可用。在它再次可用前，您的貼文可能不會向任何方向張貼。
+  mastodon_instance_recently_unavailable: 您的 Mastodon 站台最近不可用。交叉張貼程式將會嘗試再次使用它。

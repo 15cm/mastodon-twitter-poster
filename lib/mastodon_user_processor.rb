@@ -55,16 +55,42 @@ class MastodonUserProcessor
 
   TWITTER_CANNOT_PERFORM_WRITE_ACTIONS = 261
 
+  def self.stoplight_wrap_request(domain, &)
+    if domain.present?
+      Stoplight("source:#{domain}", &)
+        .with_threshold(3)
+        .with_cool_off_time(5.minutes.seconds)
+        .with_error_handler { |error, handle| error.is_a?(HTTP::Error) || error.is_a?(OpenSSL::SSL::SSLError) || error.is_a?(Oj::ParseError) ? handle.call(error) : raise(error) }
+        .run
+    else
+      yield
+    end
+  end
+
+  TWITTER_OVER_DAILY_LIMIT = 185
+  def self.stoplight_twitter_wrap_request(&)
+    Stoplight("source:twitter.com", &)
+      .with_threshold(3)
+      .with_cool_off_time(20.minutes.seconds)
+      .with_error_handler { |error, handle| error.is_a?(Twitter::Error::Forbidden) && error.code == TWITTER_OVER_DAILY_LIMIT ? handle.call(error) : raise(error) }
+      .run
+  end
+
   def self.get_last_toots_for_user(user)
     return unless user.mastodon && user.twitter
 
     opts = statuses_options(user)
 
-    new_toots = user.mastodon_client.statuses(user.mastodon_id, opts)
+    new_toots = stoplight_wrap_request(user.mastodon_domain) do
+      user.mastodon_client.statuses(user.mastodon_id, opts)
+    end
+
     last_sucessful_toot = nil
     new_toots.to_a.reverse_each do |t|
       begin
-        MastodonUserProcessor.new(t, user).process_toot
+        stoplight_twitter_wrap_request do
+          MastodonUserProcessor.new(t, user).process_toot
+        end
         last_sucessful_toot = t
       rescue HTTP::ConnectionError, Oj::ParseError => ex
         Rails.logger.warn { "Domain #{user.mastodon.mastodon_client.domain} seems offline" }
@@ -385,12 +411,13 @@ class MastodonUserProcessor
     url.to_s
   end
 
+  MEDIA_DESCRIPTION_CHAR_LIMIT = 1_000 # From https://help.twitter.com/en/using-twitter/write-image-descriptions
   def upload_media(media, file, file_type)
     media_id = nil
     options = detect_twitter_filetype(file_type)
     media_id = user.twitter_client.upload(file, options).to_s
     unless media.to_h["description"].blank?
-      alt_text = (media.to_h["description"]).truncate(420, separator: /[ \n]/, omission: "…")
+      alt_text = media.to_h["description"].truncate(MEDIA_DESCRIPTION_CHAR_LIMIT, separator: /[ \n]/, omission: "…")
       user.twitter_client.create_metadata(media_id, alt_text: { text: alt_text })
     end
     media_id

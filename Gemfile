@@ -1,17 +1,17 @@
 source "https://rubygems.org"
 
 # The framework
-gem "rails", "~> 7.0.1"
+gem "rails", "~> 7.0.4"
 gem "rails-i18n"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
 
 # Use postgresql as the database for Active Record
-gem "pg", "~> 1.1"
+gem "pg", "~> 1.4"
 
 # Use the Puma web server [https://github.com/puma/puma]
-gem "puma", "~> 5.0"
+gem "puma", "~> 6.0"
 
 # Bundle and transpile JavaScript [https://github.com/rails/jsbundling-rails]
 gem "jsbundling-rails"
@@ -63,7 +63,7 @@ gem "sidekiq"
 # Used to be able to schedule background jobs
 gem "sidekiq-scheduler"
 # Used to be able to avoid doubled sidekiq jobs
-gem "sidekiq-unique-jobs", "~> 6.0"
+gem "sidekiq-unique-jobs"
 
 # Used to validate text length before submitting to twitter
 gem "twitter-text"
@@ -72,6 +72,9 @@ gem "twitter-text"
 gem "http_accept_language"
 
 gem "rake"
+
+# Used to stop down instances from impacting too much crossposter performance
+gem "stoplight"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
